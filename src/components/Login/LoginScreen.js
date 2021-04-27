@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Pressable, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image, TextInput } from 'react-native';
 
 import Colors from '../../res/colors'
 
@@ -11,7 +11,6 @@ class LoginScreen extends Component {
   }
 
   handleInput() {
-
   }
 
   login() {
@@ -52,11 +51,11 @@ class LoginScreen extends Component {
           />
 
 
-          <TouchableOpacity
+          <Pressable
             style={styles.btn}
             onPress={() => this.login()}>
             <Text style={styles.btnText}>Login</Text>
-          </TouchableOpacity>
+          </Pressable>
 
         </View>
 
