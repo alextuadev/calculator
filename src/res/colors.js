@@ -3,7 +3,8 @@ const Colors = {
 	green: "#009821",
 	gray: "#D1D1D1",
 	textGray: '#8D8D8D',
-	bgGray: '#f4f4f4'
+	bgGray: '#f4f4f4',
+	textCalculator: '#a7a7a7'
 }
 
 export default Colors;

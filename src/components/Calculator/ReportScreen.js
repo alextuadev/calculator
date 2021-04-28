@@ -12,7 +12,7 @@ class ReportScreen extends Component {
   }
 
   calculator() {
-    this.props.navigation.navigation('Calculator')
+    this.props.navigation.navigate('Calculator')
   }
 
   render() {

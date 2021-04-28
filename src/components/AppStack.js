@@ -21,7 +21,6 @@ const AppStack = () => {
       <Stack.Screen
         name="Report"
         component={ReportScreen}
-
         options={{
           headerBackImage: () => {
             <Image style={{ width: 27, height: 27 }} source={require('../assets/img/logo.png')} />
@@ -38,7 +37,17 @@ const AppStack = () => {
       <Stack.Screen
         name="Calculator"
         component={CalculatorScreen}
-        options={{ headerShown: false }} />
+        options={{
+          headerBackImage: () => {
+            <Image style={{ width: 27, height: 27 }} source={require('../assets/img/logo.png')} />
+          },
+          headerLeft: null,
+          headerStyle: {
+            backgroundColor: Colors.bgGray,
+            height: 127,
+          },
+          headerTitle: props => <ReportHeader {...props} />
+        }} />
     </Stack.Navigator>
   );
 }
