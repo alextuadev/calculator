@@ -1,0 +1,2 @@
+export const SAVE_OPERATION = "SAVE_OPERATION";
+export const CLEAN_REPORT = "CLEAN_REPORT";

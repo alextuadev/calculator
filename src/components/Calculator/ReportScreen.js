@@ -3,12 +3,17 @@ import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import Colors from '../../res/colors'
 import { FlatList } from 'react-native-gesture-handler';
 import ReportItem from './ReportItem';
+import * as actions from "../../actions/reports";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
 
 class ReportScreen extends Component {
   state = {
   }
 
   componentDidMount = async () => {
+    console.log(this.props)
   }
 
   calculator() {
@@ -16,14 +21,7 @@ class ReportScreen extends Component {
   }
 
   render() {
-    const reports = [
-      'substraction 1 + 1 = 0 ',
-      'substraction 1 + 1 = 0 ',
-      'substraction 1 + 1 = 0 ',
-      'substraction 1 + 1 = 0 ',
-      'substraction 1 + 1 = 0 ',
-    ]
-
+    const { reports } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.actionTitle}>
@@ -36,18 +34,30 @@ class ReportScreen extends Component {
           </Pressable>
         </View>
 
-
         <FlatList
-          data={reports}
+          keyExtractor={(item, index) => index}
+          data={reports.list}
           renderItem={ReportItem}
         />
-
-
-
       </View>
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  console.log("STATE TO PROS", state)
+  return {
+    reports: state.reports
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -80,7 +90,9 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30
   }
-
 });
 
-export default ReportScreen;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReportScreen);

@@ -10,7 +10,7 @@ import { Image } from 'react-native';
 
 const Stack = createStackNavigator();
 
-const AppStack = () => {
+const AppStack = (props) => {
   return (
     <Stack.Navigator>
       <Stack.Screen

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet } from 'react-native';
 import Colors from '../../res/colors'
 import InputButton from './InputButton';
+import * as actions from "../../actions/reports";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
 
 const buttons = [
   ['C', 'clear', '%', '/'],
@@ -14,15 +17,41 @@ const buttons = [
 
 
 class CalculatorScreen extends Component {
-  state = {
-    displayValue: '0',
-    operator: null,
-    firstValue: '',
-    secondValue: '',
-    nextValue: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayValue: '0',
+      operator: null,
+      firstValue: '',
+      secondValue: '',
+      nextValue: false
+    }
   }
 
+  determineOperation(ope) {
+    let nOpe;
+    switch (ope) {
+      case '+':
+        nOpe = "Addition";
+        break;
+      case '-':
+        nOpe = "Sustraction"
+        break
+      case '*':
+        nOpe = "Multiplication"
+        break
+      case '/':
+        nOpe = "Divition";
+        break
+    }
+    return nOpe
+
+  }
+
+
   handleInput = (input) => {
+
+    console.log(this.props)
     const { displayValue, operator, firstValue, secondValue, nextValue } = this.state
     switch (input) {
       case '0':
@@ -35,6 +64,7 @@ class CalculatorScreen extends Component {
       case '7':
       case '8':
       case '9':
+        console.log("displayValue", displayValue)
         this.setState({
           displayValue: displayValue === "0" ? input : displayValue + input
         })
@@ -63,13 +93,19 @@ class CalculatorScreen extends Component {
       case '=':
         let formatOperator = (operator == 'X') ? '*' : operator
         let result = eval(firstValue + formatOperator + secondValue)
+        let dValue = result % 1 === 0 ? result : result.toFixed(2);
+        let ftValue = result % 1 === 0 ? result : result.toFixed(2);
+
+        let operationString = `${this.determineOperation(formatOperator)} ${firstValue} ${formatOperator} ${secondValue} = ${dValue}`;
         this.setState({
-          displayValue: result % 1 === 0 ? result : result.toFixed(2),
-          firstValue: result % 1 === 0 ? result : result.toFixed(2),
+          displayValue: dValue,
+          firstValue: ftValue,
           secondValue: '',
           operator: null,
           nextValue: false,
-        })
+        });
+
+        this.props.actions.saveReportOperation(operationString);
         break;
       case 'clear':
       case 'C':
@@ -78,14 +114,6 @@ class CalculatorScreen extends Component {
           displayValue: '0',
           firstValue: '',
           secondValue: ''
-        })
-        break;
-      case 'DEL':
-        let string = displayValue.toString();
-        let length = string.length
-        this.setState({
-          displayValue: length == 1 ? "0" : displayValue.slice(0, -1),
-          firstValue: length == 1 ? "" : displayValue.slice(0, -1),
         })
         break;
       case '.':
@@ -130,6 +158,19 @@ class CalculatorScreen extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    reports: state.reports
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -161,4 +202,8 @@ const styles = StyleSheet.create({
 
 });
 
-export default CalculatorScreen;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CalculatorScreen);
+
